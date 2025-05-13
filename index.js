@@ -93,7 +93,7 @@ app.listen(3000 ,()=> {
             const deleteTodo = await Todo.findByIdAndDelete(id);
 
             if(!deleteTodo){
-                return res.status(404).json({message:"product not found"});
+                return res.status(404).json({message:"todo list not found"});
             }
              
             res.json({message:'todo list deleted succesfully',Todo:deleteTodo });
@@ -125,7 +125,7 @@ app.listen(3000 ,()=> {
 app.get("/get/users", async(req,res)=>{
     try {
         const user = await User.find();
-        res.status(200).json(msg:'cannnot get user');
+        res.status(200).json({user});
     } catch (error) {
         res.status(500).json({msg:"cannot get users ",error:error.message});
     }
@@ -133,9 +133,9 @@ app.get("/get/users", async(req,res)=>{
 
 //updaing user 
 
-app.put("/update/user.:id", async(req,res)=>{
+app.put("/update/user/:id", async(req,res)=>{
 
-        const {id} = params;
+        const {id} = req.params;
         const update = req.body;
 
    
@@ -154,3 +154,21 @@ app.put("/update/user.:id", async(req,res)=>{
 
 
 // deleting user 
+
+app.delete('/delete/user/:id',async(req,res)=>{
+
+    const {id} = req.params;
+
+    try {
+     const deleteUser = await User.findByIdAndDelete(id);
+     
+     if(!deleteUser){
+       return res.status(404).json({msg:'user not found'});
+     }
+     res.status(200).json({msg:'user deleted succesfully'});
+
+    } catch (error) {
+        res.status(500).json({msg:'can not delete users',error:error.message})
+    }
+    
+})
