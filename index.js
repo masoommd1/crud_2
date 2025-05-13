@@ -89,7 +89,7 @@ app.listen(3000 ,()=> {
     app.delete("/todo/delete/:id", async(req,res)=>{
 
         const {id} = req.params;
-        try {
+        try { 
             const deleteTodo = await Todo.findByIdAndDelete(id);
 
             if(!deleteTodo){
@@ -124,8 +124,33 @@ app.listen(3000 ,()=> {
 
 app.get("/get/users", async(req,res)=>{
     try {
-        
+        const user = await User.find();
+        res.status(200).json(msg:'cannnot get user');
     } catch (error) {
         res.status(500).json({msg:"cannot get users ",error:error.message});
     }
 })
+
+//updaing user 
+
+app.put("/update/user.:id", async(req,res)=>{
+
+        const {id} = params;
+        const update = req.body;
+
+   
+    try {
+        const updateUser = await User.findByIdAndUpdate(id,update);
+        
+        if(!updateUser)
+        {
+            return res.status(400).json({msg:'cannot find users ',})
+        }
+        res.json(updateUser);
+    } catch (error) {
+        res.status(500).json({msg:'cannot update file',error:error.message});
+    }
+})
+
+
+// deleting user 
